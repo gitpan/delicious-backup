@@ -1,0 +1,13 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         delicious-backup
+version:      0.01
+version_from: bin/delbackup
+installdirs:  site
+requires:
+    Net::Delicious:                0.9
+    Netscape::Bookmarks:           0
+    YAML:                          0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.17
