@@ -12,20 +12,20 @@ Net::Delicious::Simple - Net::Delicious for backups
 
 =head1 VERSION
 
-version 0.01
+version 0.011
 
- $Id
+ $Id: /my/cs/projects/delicious-backup/trunk/lib/Net/Delicious/Simple.pm 31219 2007-03-24T22:22:21.596166Z rjbs  $
 
 =cut
 
-$Net::Delicious::Simple::VERSION = '0.01';
+$Net::Delicious::Simple::VERSION = '0.011';
 
 =head1 SYNOPSIS
 
- use Net::Delicious::Simple;
- my $del = Net::Delicious->new(user => 'plki', pswd => 'secret');
- 
- print "$_->{href}\n" for $del->all_posts;
+  use Net::Delicious::Simple;
+  my $del = Net::Delicious->new(user => 'plki', pswd => 'secret');
+
+  print "$_->{href}\n" for $del->all_posts;
 
 =head1 DESCRIPTION
 
@@ -46,8 +46,14 @@ credentials.
 =cut
 
 sub new {
-	my ($class, @config) = @_;
-	return unless my $del = Net::Delicious->new(@config);
+	my ($class, $config) = @_;
+
+	return unless my $del = Net::Delicious->new($config);
+
+  require File::Temp;
+  my $tempdir = File::Temp::tempdir(CLEANUP => 1 );
+  $del->{__updates} = $del->{__updated} = $tempdir;
+
 	bless { del => $del } => $class;
 }
 
@@ -69,13 +75,17 @@ Tags is an arrayref, and datetime is in seconds-sicne-epoch, GMT.
 =cut
 
 sub all_posts {
+  my ($self) = @_;
+
+  my @all_posts = $self->{del}->all_posts;
+
 	my @posts = map {{
 		description => $_->description,
 		extended    => $_->extended,
 		href        => $_->href,
 		tags        => [ split /\s+/, $_->tags ],
 		datetime    => str2time($_->time)
-	}} (shift)->{del}->all_posts;
+	}} @all_posts;
 }
 
 =head1 SEE ALSO

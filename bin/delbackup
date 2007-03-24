@@ -2,8 +2,7 @@
 use strict;
 use warnings;
 
-my
-$VERSION = '0.01';
+our $VERSION = '0.011';
 
 use Net::Delicious::Simple;
 
@@ -60,6 +59,10 @@ __END__
 =head1 NAME
 
 delbackup - back up your del.icio.us posts
+
+=head1 VERSION
+
+ $Id: /my/cs/projects/delicious-backup/trunk/bin/delbackup 31219 2007-03-24T22:22:21.596166Z rjbs  $
 
 =head1 SYNOPSIS
 
