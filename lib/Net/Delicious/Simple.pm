@@ -1,7 +1,7 @@
 package Net::Delicious::Simple;
-
 use strict;
 use warnings;
+
 use Config::Auto;
 use Date::Parse;
 use Net::Delicious;
@@ -12,13 +12,11 @@ Net::Delicious::Simple - Net::Delicious for backups
 
 =head1 VERSION
 
-version 0.011
-
- $Id: /my/cs/projects/delicious-backup/trunk/lib/Net/Delicious/Simple.pm 31219 2007-03-24T22:22:21.596166Z rjbs  $
+version 0.013
 
 =cut
 
-$Net::Delicious::Simple::VERSION = '0.011';
+our $VERSION = '0.013';
 
 =head1 SYNOPSIS
 
@@ -48,11 +46,10 @@ credentials.
 sub new {
 	my ($class, $config) = @_;
 
-	return unless my $del = Net::Delicious->new($config);
-
-  require File::Temp;
-  my $tempdir = File::Temp::tempdir(CLEANUP => 1 );
-  $del->{__updates} = $del->{__updated} = $tempdir;
+	return unless my $del = Net::Delicious->new({
+    %$config,
+    updates => File::Temp::tempdir(CLEANUP => 1),
+  });
 
 	bless { del => $del } => $class;
 }
